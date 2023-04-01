@@ -5,6 +5,7 @@
 import Features.Patterns as Pattern
 import re
 import ipaddress as ip
+import whois
 
 
 class AddressFeatures:
@@ -60,7 +61,14 @@ class AddressFeatures:
         return self.url
 
     def domainRegLength(self, url):
-        return self.url
+        domain_info = whois.whois(self.url)
+        create_date = domain_info.get('creation_date')[0]
+        expire_date = domain_info.get('expiration_date')[0]
+        domain_age = expire_date - create_date
+        if domain_age <= 365:
+            return -1
+        else:
+            return 1
 
     def faviconExternalDomain(self, url):
         return self.url
