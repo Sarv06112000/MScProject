@@ -6,14 +6,16 @@ import Features.Patterns as Pattern
 import re
 import ipaddress as ip
 import whois
+import socket
+import ssl
+from urllib.parse import urlparse
 
 
 class AddressFeatures:
     def __init__(self, url):
         self.url = url
-        print("hello world")
 
-    def usingIPAddress(self, url):
+    def usingIPAddress(self):
         domain_name = re.findall(Pattern.DOMAIN, self.url)[0]
         if len(domain_name) > 0:
             try:
@@ -22,45 +24,65 @@ class AddressFeatures:
             except:
                 return 1
 
-    def longURL(self, url):
-        if len(url) < 54:
+    def longURL(self):
+        if len(self.url) < 54:
             return 1
         if 54 <= len(self.url) <= 75:
             return 0
         else:
             return -1
 
-    def tinyURL(self, url):
+    def tinyURL(self):
         if len(re.findall(Pattern.DOMAIN, self.url)[0] < 12):
             return -1
         return 1
 
-    def atRateSymbol(self, url):
+    def atRateSymbol(self):
         if re.findall('@', self.url):
             return -1
         return 1
 
-    def redirectDoubleSlash(self, url):
+    def redirectDoubleSlash(self):
         if self.url.rfind('//') > 6:
             return -1
         return 1
 
-    def prefixSuffixDomain(self, url):
+    def prefixSuffixDomain(self):
         if len(re.findall('-', re.findall(Pattern.DOMAIN, self.url)[0])) > 0:
             return -1
         return 1
 
-    def subMultiDomain(self, url):
+    def subMultiDomain(self):
         if len(re.findall('\.', re.findall(Pattern.DOMAIN, self.url))) > 2:
             return -1
         if 1 < len(re.findall('\.', re.findall(Pattern.DOMAIN, self.url))) <= 2:
             return 0
         return 1
 
-    def httpsDomain(self, url):
-        return self.url
+    def httpsDomain(self):
+        domain_name = re.findall(Pattern.DOMAIN, self.url)[0]
+        if 'https' in urlparse(self.url).scheme:
+            try:
+                ctx = ssl.create_default_context()
+                with ctx.wrap_socket(socket.socket(), server_hostname=domain_name) as s:
+                    s.connect((domain_name, 443))
+                    cert = s.getpeercert()
+            except:
+                return -1
+            issuer = dict(x[0] for x in cert['issuer'])
+            issued_by = issuer.get('organizationName')
+            domain_info = whois.whois(self.url)
+            create_date = domain_info.get('creation_date')[0]
+            expire_date = domain_info.get('expiration_date')[0]
+            domain_age = expire_date - create_date
+            if domain_age >= 365 and issued_by in []:
+                return 1
+            elif issued_by not in []:
+                return 0
+        else:
+            return -1
 
-    def domainRegLength(self, url):
+    def domainRegLength(self):
         domain_info = whois.whois(self.url)
         create_date = domain_info.get('creation_date')[0]
         expire_date = domain_info.get('expiration_date')[0]
@@ -70,14 +92,19 @@ class AddressFeatures:
         else:
             return 1
 
-    def faviconExternalDomain(self, url):
+    def faviconExternalDomain(self):
         return self.url
 
-    def nonStandardPort(self, url):
+    def nonStandardPort(self):
         return self.url
 
-    def httpsInDomainPart(self, url):
-        return self.url
+    def httpsInDomainPart(self):
+        domain_name = re.findall(Pattern.DOMAIN, self.url)[0]
+        for domain in domain_name:
+            if re.match('https', domain):
+                return -1
+            else:
+                return 1
 
 
 # url = "http://www.hud.ac.uk/students/"
