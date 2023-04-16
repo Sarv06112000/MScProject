@@ -9,6 +9,7 @@ import whois
 import socket
 import ssl
 from urllib.parse import urlparse
+import WebCrawling as wc
 
 
 class AddressFeatures:
@@ -33,7 +34,7 @@ class AddressFeatures:
             return -1
 
     def tinyURL(self):
-        if len(re.findall(Pattern.DOMAIN, self.url)[0] < 12):
+        if len(re.findall(Pattern.DOMAIN, self.url)[0]) < 12:
             return -1
         return 1
 
@@ -53,9 +54,10 @@ class AddressFeatures:
         return 1
 
     def subMultiDomain(self):
-        if len(re.findall('\.', re.findall(Pattern.DOMAIN, self.url))) > 2:
+        domain_name = re.findall(Pattern.DOMAIN, self.url)[0]
+        if len(re.findall('\.', domain_name)) > 2:
             return -1
-        if 1 < len(re.findall('\.', re.findall(Pattern.DOMAIN, self.url))) <= 2:
+        if 1 < len(re.findall('\.', domain_name)) <= 2:
             return 0
         return 1
 
@@ -83,17 +85,31 @@ class AddressFeatures:
             return -1
 
     def domainRegLength(self):
-        domain_info = whois.whois(self.url)
-        create_date = domain_info.get('creation_date')[0]
-        expire_date = domain_info.get('expiration_date')[0]
-        domain_age = expire_date - create_date
+        try:
+            domain_info = whois.whois(self.url)
+            create_date = domain_info.get('creation_date')[0]
+            expire_date = domain_info.get('expiration_date')[0]
+            domain_age = expire_date - create_date
+        except:
+            return -1
         if domain_age <= 365:
             return -1
         else:
             return 1
 
     def faviconExternalDomain(self):
-        return self.url
+        domain_name = re.findall(Pattern.DOMAIN, self.url)[0]
+        soup = wc.getSoup(self.url)
+        try:
+            heads = soup.find_all('head')
+            for head in heads:
+                links = head.find_all_next('link', href=True)
+                for link in links:
+                    if domain_name in link['href']:
+                        return 1
+        except:
+            -1
+        return -1
 
     def nonStandardPort(self):
         return self.url
@@ -115,3 +131,19 @@ class AddressFeatures:
 # url = "http://federmacedoadv.com.br/3f/aze/ab51e2e319e51502f416dbe46b773a5e/?cmd=_home&amp;dispatch=11004d58f5b74f8dc1e7c2e8dd4105e811004d58f5b74f8dc1e7c2e8dd4105e8@phishing.website.html"
 # url = "http://127.0.0.1/fake.html"
 # url = "http://0x58.0xCC.0xCA.0x62/2/paypal.ca/index.html"
+
+
+# address = AddressFeatures(url)
+# print(address.usingIPAddress())
+# print(address.longURL())
+# print(address.tinyURL())
+# print(address.atRateSymbol())
+# print(address.redirectDoubleSlash())
+# print(address.prefixSuffixDomain())
+# print(address.subMultiDomain())
+# print(address.httpsDomain())
+# print(address.domainRegLength())
+# print(address.faviconExternalDomain())
+# print(address.nonStandardPort())
+# print(address.httpsInDomainPart())
+
