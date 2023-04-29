@@ -2,45 +2,65 @@ from AddressBarBasedFeatures import AddressFeatures
 from AbnormalBasedFeatures import AbnormalFeatures
 from DomainBasedFeatures import DomainFeatures
 from HtmlAndJavaScriptBasedFeatures import HtmlJsFeatures
+import whois
+import WebCrawling as web
 
 
 class FeaturesExtraction:
     def __init__(self, url):
         self.url = url
-        self.address = AddressFeatures(url)
-        self.abnormal = AbnormalFeatures(url)
-        self.domain = DomainFeatures(url)
-        self.htmljs = HtmlJsFeatures(url)
+        try:
+            self.domain_info = whois.whois(url)
+        except:
+            self.domain_info = 1
+        self.soup = web.getSoup(url)
+        self.address = AddressFeatures.AddressFeatures(self.url)
+        self.abnormal = AbnormalFeatures.AbnormalFeatures(self.url)
+        self.domain = DomainFeatures.DomainFeatures(self.url)
+        self.htmljs = HtmlJsFeatures.HtmlJsFeatures(self.url)
 
-    def getFeatures(self, url):
-        features = [self.address.usingIPAddress(url),
-                    self.address.longURL(url),
-                    self.address.tinyURL(url),
-                    self.address.atRateSymbol(url),
-                    self.address.redirectDoubleSlash(url),
-                    self.address.prefixSuffixDomain(url),
-                    self.address.subMultiDomain(url),
-                    self.address.httpsDomain(url),
-                    self.address.domainRegLength(url),
-                    self.address.faviconExternalDomain(url),
-                    self.address.nonSandardPort(url),
-                    self.address.httpsInDomain(url),
-                    self.abnormal.requestURL(url),
-                    self.abnormal.urlOfAnchor(url),
-                    self.abnormal.linksInTags(url),
-                    self.abnormal.serverFormHandler(url),
-                    self.abnormal.submitMailInformation(url),
-                    self.abnormal.abnormalURL(url),
-                    self.htmljs.websiteForwarding(url),
-                    self.htmljs.statusBarCustom(url),
-                    self.htmljs.disableRightClick(url),
-                    self.htmljs.usingPopUpWindow(url),
-                    self.htmljs.iFrameRedirection(url),
-                    self.domain.ageOfDomain(url),
-                    self.domain.dnsRecord(url),
-                    self.domain.websiteTraffic(url),
-                    self.domain.pageRank(url),
-                    self.domain.googleIndex(url),
-                    self.domain.linkPointingPage(url),
-                    self.domain.statisticsReport(url)]
+    def getFeatures(self):
+        features = [self.address.usingIPAddress(),
+                    self.address.longURL(),
+                    self.address.tinyURL(),
+                    self.address.atRateSymbol(),
+                    self.address.redirectDoubleSlash(),
+                    self.address.prefixSuffixDomain(),
+                    self.address.subMultiDomain(),
+                    self.address.httpsDomain(self.domain_info),
+                    self.address.domainRegLength(self.domain_info),
+                    self.address.faviconExternalDomain(self.soup),
+                    self.address.nonStandardPort(),
+                    self.address.httpsDomain(self.domain_info),
+                    self.abnormal.requestURL(),
+                    self.abnormal.urlOfAnchor(),
+                    self.abnormal.linksInTags(),
+                    self.abnormal.serverFormHandler(),
+                    self.abnormal.submitMailInformation(),
+                    self.abnormal.abnormalURL(),
+                    self.htmljs.websiteForwarding(),
+                    self.htmljs.statusBarCustom(),
+                    self.htmljs.disableRightClick(),
+                    self.htmljs.usingPopUpWindow(),
+                    self.htmljs.iFrameRedirection(),
+                    self.domain.ageOfDomain(),
+                    self.domain.dnsRecord(),
+                    self.domain.websiteTraffic(),
+                    self.domain.pageRank(),
+                    self.domain.googleIndex(),
+                    self.domain.linkPointingPage(),
+                    self.domain.statisticReport()]
         return features
+
+# url = "http://www.hud.ac.uk/students/"
+# url = "http://www.Confirme-paypal.com/"
+# url = "http://www.legitimate.com//http://www.phishing.com"
+# url = "http://bit.ly/19DXSk4"
+# url = "http://portal.hud.ac.uk/"
+# url = "http://federmacedoadv.com.br/3f/aze/ab51e2e319e51502f416dbe46b773a5e/?cmd=_home&amp;dispatch=11004d58f5b74f8dc1e7c2e8dd4105e811004d58f5b74f8dc1e7c2e8dd4105e8@phishing.website.html"
+# url = "http://127.0.0.1/fake.html"
+# url = "http://0x58.0xCC.0xCA.0x62/2/paypal.ca/index.html"
+
+
+fe = FeaturesExtraction(url)
+print(fe.getFeatures())

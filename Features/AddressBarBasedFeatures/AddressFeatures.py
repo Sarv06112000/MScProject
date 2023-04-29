@@ -5,11 +5,11 @@
 import Features.Patterns as Pattern
 import re
 import ipaddress as ip
-import whois
+# import whois
 import socket
 import ssl
 from urllib.parse import urlparse
-import WebCrawling as wc
+# from Features import WebCrawling as wc
 
 
 class AddressFeatures:
@@ -61,7 +61,7 @@ class AddressFeatures:
             return 0
         return 1
 
-    def httpsDomain(self):
+    def httpsDomain(self, domain_info):
         domain_name = re.findall(Pattern.DOMAIN, self.url)[0]
         if 'https' in urlparse(self.url).scheme:
             try:
@@ -73,7 +73,8 @@ class AddressFeatures:
                 return -1
             issuer = dict(x[0] for x in cert['issuer'])
             issued_by = issuer.get('organizationName')
-            domain_info = whois.whois(self.url)
+            domain_info = domain_info
+            # whois.whois(self.url)
             create_date = domain_info.get('creation_date')[0]
             expire_date = domain_info.get('expiration_date')[0]
             domain_age = expire_date - create_date
@@ -84,9 +85,10 @@ class AddressFeatures:
         else:
             return -1
 
-    def domainRegLength(self):
+    def domainRegLength(self, domain):
         try:
-            domain_info = whois.whois(self.url)
+            domain_info = domain
+            # whois.whois(self.url)
             create_date = domain_info.get('creation_date')[0]
             expire_date = domain_info.get('expiration_date')[0]
             domain_age = expire_date - create_date
@@ -97,9 +99,10 @@ class AddressFeatures:
         else:
             return 1
 
-    def faviconExternalDomain(self):
+    def faviconExternalDomain(self, beautifulSoup):
         domain_name = re.findall(Pattern.DOMAIN, self.url)[0]
-        soup = wc.getSoup(self.url)
+        soup = beautifulSoup
+        # wc.getSoup(self.url)
         try:
             heads = soup.find_all('head')
             for head in heads:
@@ -134,10 +137,10 @@ class AddressFeatures:
 
 
 # address = AddressFeatures(url)
-# print(address.usingIPAddress())
-# print(address.longURL())
 # print(address.tinyURL())
+# print(address.longURL())
 # print(address.atRateSymbol())
+# print(address.usingIPAddress())
 # print(address.redirectDoubleSlash())
 # print(address.prefixSuffixDomain())
 # print(address.subMultiDomain())
