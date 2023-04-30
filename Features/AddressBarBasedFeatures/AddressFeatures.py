@@ -77,8 +77,8 @@ class AddressFeatures:
             # whois.whois(self.url)
             create_date = domain_info.get('creation_date')[0]
             expire_date = domain_info.get('expiration_date')[0]
-            domain_age = expire_date - create_date
-            if domain_age >= 365 and issued_by in []:
+            domain_age = (expire_date - create_date)
+            if domain_age.days >= 365 and issued_by in []:
                 return 1
             elif issued_by not in []:
                 return 0
@@ -91,10 +91,10 @@ class AddressFeatures:
             # whois.whois(self.url)
             create_date = domain_info.get('creation_date')[0]
             expire_date = domain_info.get('expiration_date')[0]
-            domain_age = expire_date - create_date
+            domain_age = (expire_date - create_date)
         except:
             return -1
-        if domain_age <= 365:
+        if domain_age.days <= 365:
             return -1
         else:
             return 1

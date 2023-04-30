@@ -3,6 +3,7 @@
 # 1  ----> Legitimate
 import re
 import Features.Patterns as Pattern
+import requests
 
 
 class AbnormalFeatures:
@@ -72,8 +73,15 @@ class AbnormalFeatures:
         except:
             return -1
 
-    def submitMailInformation(self, beautifulSoup):
-        return self.url
+    def submitMailInformation(self):
+        try:
+            resp = requests.get(self.url)
+            if re.findall(r"[mail\(\)|mailto:?]", resp.text):
+                return -1
+            else:
+                return 1
+        except:
+            return -1
 
     def abnormalURL(self, beautifulSoup):
         return self.url
