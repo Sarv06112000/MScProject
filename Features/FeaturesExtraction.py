@@ -36,8 +36,8 @@ class FeaturesExtraction:
                     self.abnormal.urlOfAnchor(self.soup),
                     self.abnormal.linksInTags(self.soup),
                     self.abnormal.serverFormHandler(self.soup),
-                    self.abnormal.submitMailInformation()]
-                    # self.abnormal.abnormalURL(self.soup),
+                    self.abnormal.submitMailInformation(),
+                    self.abnormal.abnormalURL(self.domain_info)]
                     # self.htmljs.websiteForwarding(),
                     # self.htmljs.statusBarCustom(),
                     # self.htmljs.disableRightClick(),
@@ -53,7 +53,7 @@ class FeaturesExtraction:
         return features
 
 
-url = "http://www.hud.ac.uk/students/"
+# url = "http://www.hud.ac.uk/students/"
 # url = "http://www.Confirme-paypal.com/"
 # url = "http://www.legitimate.com//http://www.phishing.com"
 # url = "http://bit.ly/19DXSk4"
@@ -62,7 +62,7 @@ url = "http://www.hud.ac.uk/students/"
 # url = "http://127.0.0.1/fake.html"
 # url = "http://0x58.0xCC.0xCA.0x62/2/paypal.ca/index.html"
 # url = "https://www.tutorialspoint.com/python-pandas-get-the-number-of-days-from-timedelta"
-# url = "https://www.google.com/search?q=google+maps&rlz=1C1CHBD_enIN1043IN1043&oq=go&aqs=chrome.4.69i60j46i131i199i433i465i512j0i131i433i512j69i57j0i433i512l2j69i60l2.2648j0j7&sourceid=chrome&ie=UTF-8"
+url = "https://www.google.com/search?q=google+maps&rlz=1C1CHBD_enIN1043IN1043&oq=go&aqs=chrome.4.69i60j46i131i199i433i465i512j0i131i433i512j69i57j0i433i512l2j69i60l2.2648j0j7&sourceid=chrome&ie=UTF-8"
 
 
 fe = FeaturesExtraction(url)
