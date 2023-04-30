@@ -83,5 +83,19 @@ class AbnormalFeatures:
         except:
             return -1
 
-    def abnormalURL(self, beautifulSoup):
-        return self.url
+    def abnormalURL(self, domain_info):
+        domain = re.findall(Pattern.DOMAIN, self.url)[0]
+        try:
+            domainName = domain_info['domain_name']
+            if type(domainName) == type("domain"):
+                if domain == domainName.lower():
+                    return 1
+                else:
+                    return -1
+            else:
+                if domain == domainName[1].lower():
+                    return 1
+                else:
+                    return -1
+        except:
+            return -1
