@@ -7,5 +7,5 @@ def getSoup(url):
         resp = requests.get(url)
         soup = BeautifulSoup(resp.text, 'html.parser')
     except:
-        return "Url does not exists"
+        return -1
     return soup

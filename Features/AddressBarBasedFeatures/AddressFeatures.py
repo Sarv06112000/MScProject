@@ -101,10 +101,10 @@ class AddressFeatures:
 
     def faviconExternalDomain(self, beautifulSoup):
         domain_name = re.findall(Pattern.DOMAIN, self.url)[0]
-        soup = beautifulSoup
+        # soup = beautifulSoup
         # wc.getSoup(self.url)
         try:
-            heads = soup.find_all('head')
+            heads = beautifulSoup.find_all('head')
             for head in heads:
                 links = head.find_all_next('link', href=True)
                 for link in links:

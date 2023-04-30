@@ -32,27 +32,28 @@ class FeaturesExtraction:
                     self.address.faviconExternalDomain(self.soup),
                     self.address.nonStandardPort(),
                     self.address.httpsDomain(self.domain_info),
-                    self.abnormal.requestURL(),
-                    self.abnormal.urlOfAnchor(),
-                    self.abnormal.linksInTags(),
-                    self.abnormal.serverFormHandler(),
-                    self.abnormal.submitMailInformation(),
-                    self.abnormal.abnormalURL(),
-                    self.htmljs.websiteForwarding(),
-                    self.htmljs.statusBarCustom(),
-                    self.htmljs.disableRightClick(),
-                    self.htmljs.usingPopUpWindow(),
-                    self.htmljs.iFrameRedirection(),
-                    self.domain.ageOfDomain(),
-                    self.domain.dnsRecord(),
-                    self.domain.websiteTraffic(),
-                    self.domain.pageRank(),
-                    self.domain.googleIndex(),
-                    self.domain.linkPointingPage(),
-                    self.domain.statisticReport()]
+                    # self.abnormal.requestURL(self.soup)]
+                    self.abnormal.urlOfAnchor(self.soup),
+                    self.abnormal.linksInTags(self.soup),
+                    self.abnormal.serverFormHandler(self.soup)]
+                    # self.abnormal.submitMailInformation(self.soup),
+                    # self.abnormal.abnormalURL(self.soup),
+                    # self.htmljs.websiteForwarding(),
+                    # self.htmljs.statusBarCustom(),
+                    # self.htmljs.disableRightClick(),
+                    # self.htmljs.usingPopUpWindow(),
+                    # self.htmljs.iFrameRedirection(),
+                    # self.domain.ageOfDomain(),
+                    # self.domain.dnsRecord(),
+                    # self.domain.websiteTraffic(),
+                    # self.domain.pageRank(),
+                    # self.domain.googleIndex(),
+                    # self.domain.linkPointingPage(),
+                    # self.domain.statisticReport()]
         return features
 
-# url = "http://www.hud.ac.uk/students/"
+
+url = "http://www.hud.ac.uk/students/"
 # url = "http://www.Confirme-paypal.com/"
 # url = "http://www.legitimate.com//http://www.phishing.com"
 # url = "http://bit.ly/19DXSk4"
