@@ -19,8 +19,14 @@ class DomainFeatures:
         else:
             return -1
 
-    def dnsRecord(self):
-        return self.url
+    def dnsRecord(self, domain_info):
+        try:
+            if len(domain_info.get("domain_name")) == 0:
+                return -1
+            else:
+                return 1
+        except:
+            return -1
 
     def websiteTraffic(self):
         return self.url

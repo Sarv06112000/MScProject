@@ -43,8 +43,8 @@ class FeaturesExtraction:
                     # self.htmljs.disableRightClick(),
                     # self.htmljs.usingPopUpWindow(),
                     # self.htmljs.iFrameRedirection(),
-                    self.domain.ageOfDomain(self.domain_info)]
-                    # self.domain.dnsRecord(),
+                    self.domain.ageOfDomain(self.domain_info),
+                    self.domain.dnsRecord(self.domain_info)]
                     # self.domain.websiteTraffic(),
                     # self.domain.pageRank(),
                     # self.domain.googleIndex(),
@@ -53,7 +53,7 @@ class FeaturesExtraction:
         return features
 
 
-# url = "http://www.hud.ac.uk/students/"
+url = "http://www.hud.ac.uk/students/"
 # url = "http://www.Confirme-paypal.com/"
 # url = "http://www.legitimate.com//http://www.phishing.com"
 # url = "http://bit.ly/19DXSk4"
@@ -63,7 +63,7 @@ class FeaturesExtraction:
 # url = "http://0x58.0xCC.0xCA.0x62/2/paypal.ca/index.html"
 # url = "https://www.tutorialspoint.com/python-pandas-get-the-number-of-days-from-timedelta"
 # url = "https://www.google.com/maps"
-url = "http://157.240.16.35"
+# url = "https://157.240.16.35"
 
 
 fe = FeaturesExtraction(url)
