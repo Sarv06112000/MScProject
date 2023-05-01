@@ -11,7 +11,46 @@ class AbnormalFeatures:
         self.url = url
 
     def requestURL(self, beautifulSoup):
-        return beautifulSoup
+        i = 0
+        success = 0
+        domain = re.findall(Pattern.DOMAIN, self.url)[0]
+        try:
+            for img in beautifulSoup.find_all('img', src=True):
+                dots = [x.start(0) for x in re.finditer('..', img['src'])]
+                if self.url in img['src'] or domain in img['src'] or len(dots) == 1:
+                    success = success + 1
+                i = i + 1
+
+            for audio in beautifulSoup.find_all('audio', src=True):
+                dots = [x.start(0) for x in re.finditer('..', audio['src'])]
+                if self.url in audio['src'] or domain in audio['src'] or len(dots) == 1:
+                    success = success + 1
+                i = i + 1
+
+            for embed in beautifulSoup.find_all('embed', src=True):
+                dots = [x.start(0) for x in re.finditer('..', embed['src'])]
+                if self.url in embed['src'] or domain in embed['src'] or len(dots) == 1:
+                    success = success + 1
+                i = i + 1
+
+            for iframe in beautifulSoup.find_all('iframe', src=True):
+                dots = [x.start(0) for x in re.finditer('..', iframe['src'])]
+                if self.url in iframe['src'] or domain in iframe['src'] or len(dots) == 1:
+                    success = success + 1
+                i = i + 1
+
+            try:
+                percentage = success / float(i) * 100
+                if percentage < 22.0:
+                    return 1
+                elif (percentage >= 22.0) and (percentage < 61.0):
+                    return 0
+                else:
+                    return -1
+            except:
+                return 0
+        except:
+            return -1
 
     def urlOfAnchor(self, beautifulSoup):
         domain_name = re.findall(Pattern.DOMAIN, self.url)[0]

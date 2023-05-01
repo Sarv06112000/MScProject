@@ -30,9 +30,9 @@ class FeaturesExtraction:
                     self.address.httpsDomain(self.domain_info),
                     self.address.domainRegLength(self.domain_info),
                     self.address.faviconExternalDomain(self.soup),
-                    self.address.nonStandardPort(),
+                    # self.address.nonStandardPort(),
                     self.address.httpsDomain(self.domain_info),
-                    # self.abnormal.requestURL(self.soup)]
+                    self.abnormal.requestURL(self.soup),
                     self.abnormal.urlOfAnchor(self.soup),
                     self.abnormal.linksInTags(self.soup),
                     self.abnormal.serverFormHandler(self.soup),
