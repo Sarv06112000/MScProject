@@ -7,8 +7,17 @@ class DomainFeatures:
     def __init__(self, url):
         self.url = url
 
-    def ageOfDomain(self):
-        return self.url
+    def ageOfDomain(self, domain_info):
+        try:
+            create_date = domain_info.get('creation_date')[0]
+            expire_date = domain_info.get('expiration_date')[0]
+            domain_age = (expire_date - create_date)
+        except:
+            return -1
+        if domain_age.days >= 366/2:
+            return 1
+        else:
+            return -1
 
     def dnsRecord(self):
         return self.url
