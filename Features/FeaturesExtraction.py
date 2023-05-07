@@ -44,8 +44,8 @@ class FeaturesExtraction:
                     # self.htmljs.usingPopUpWindow(),
                     # self.htmljs.iFrameRedirection(),
                     self.domain.ageOfDomain(self.domain_info),
-                    self.domain.dnsRecord(self.domain_info)]
-                    # self.domain.websiteTraffic(),
+                    self.domain.dnsRecord(self.domain_info),
+                    self.domain.websiteTraffic()]
                     # self.domain.pageRank(),
                     # self.domain.googleIndex(),
                     # self.domain.linkPointingPage(),
@@ -53,7 +53,7 @@ class FeaturesExtraction:
         return features
 
 
-url = "http://www.hud.ac.uk/students/"
+# url = "http://www.hud.ac.uk/students/"
 # url = "http://www.Confirme-paypal.com/"
 # url = "http://www.legitimate.com//http://www.phishing.com"
 # url = "http://bit.ly/19DXSk4"
