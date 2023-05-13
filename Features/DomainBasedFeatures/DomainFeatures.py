@@ -6,6 +6,7 @@ from Features import Patterns as Pattern
 import requests
 import re
 from bs4 import BeautifulSoup
+import networkx as nx
 
 
 class DomainFeatures:
@@ -35,10 +36,8 @@ class DomainFeatures:
 
     def websiteTraffic(self):
         domain_name = re.findall(Pattern.DOMAIN, self.url)[0]
-        print(domain_name)
         try:
             resp = requests.get("https://www.semrush.com/website/"+domain_name+"/overview/")
-            print(resp)
             soup = BeautifulSoup(resp.text, 'html.parser')
             traffic = float(soup.article.b.string.replace(",", ""))
             if traffic < 100000:
@@ -50,8 +49,27 @@ class DomainFeatures:
         except:
             return -1
 
-    def pageRank(self):
-        return self.url
+    def pageRank(self, soup):
+        try:
+            links = []
+            anchors = soup.find_all('a', href=True)
+            for anchor in anchors:
+                links.append(anchor.get("href"))
+
+            # Create a directed graph representing the website structure
+            graph = nx.DiGraph()
+            for link in links:
+                graph.add_edges_from([(link, self.url)])
+
+            # Calculate the PageRank
+            rank = nx.pagerank(graph).get(str(self.url))
+            print(rank)
+            if rank < 0.2:
+                return -1
+            else:
+                return 1
+        except:
+            return -1
 
     def googleIndex(self):
         return self.url

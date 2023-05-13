@@ -45,8 +45,8 @@ class FeaturesExtraction:
                     # self.htmljs.iFrameRedirection(),
                     self.domain.ageOfDomain(self.domain_info),
                     self.domain.dnsRecord(self.domain_info),
-                    self.domain.websiteTraffic()]
-                    # self.domain.pageRank(),
+                    self.domain.websiteTraffic(),
+                    self.domain.pageRank(self.soup)]
                     # self.domain.googleIndex(),
                     # self.domain.linkPointingPage(),
                     # self.domain.statisticReport()]
