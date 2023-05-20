@@ -46,9 +46,9 @@ class FeaturesExtraction:
                     self.domain.ageOfDomain(self.domain_info),
                     self.domain.dnsRecord(self.domain_info),
                     self.domain.websiteTraffic(),
-                    self.domain.pageRank(self.soup)]
+                    self.domain.pageRank(self.soup),
                     # self.domain.googleIndex(),
-                    # self.domain.linkPointingPage(),
+                    self.domain.linkPointingPage(self.soup)]
                     # self.domain.statisticReport()]
         return features
 

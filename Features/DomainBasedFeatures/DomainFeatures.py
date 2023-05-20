@@ -74,8 +74,17 @@ class DomainFeatures:
     def googleIndex(self):
         return self.url
 
-    def linkPointingPage(self):
-        return self.url
+    def linkPointingPage(self, soup):
+        try:
+            anchors = soup.find_all("a", href=True)
+            if len(anchors) == 0:
+                return -1
+            elif 0 < len(anchors) >= 2:
+                return 0
+            else:
+                return 1
+        except:
+            return -1
 
     def statisticReport(self):
         return self.url
