@@ -38,7 +38,7 @@ class FeaturesExtraction:
                     self.abnormal.serverFormHandler(self.soup),
                     self.abnormal.submitMailInformation(),
                     self.abnormal.abnormalURL(self.domain_info),
-                    # self.htmljs.websiteForwarding(),
+                    self.htmljs.websiteForwarding(),
                     # self.htmljs.statusBarCustom(),
                     # self.htmljs.disableRightClick(),
                     # self.htmljs.usingPopUpWindow(),
@@ -53,7 +53,7 @@ class FeaturesExtraction:
         return features
 
 
-# url = "http://www.hud.ac.uk/students/"
+url = "http://www.hud.ac.uk/students/"
 # url = "http://www.Confirme-paypal.com/"
 # url = "http://www.legitimate.com//http://www.phishing.com"
 # url = "http://bit.ly/19DXSk4"
@@ -63,7 +63,7 @@ class FeaturesExtraction:
 # url = "http://0x58.0xCC.0xCA.0x62/2/paypal.ca/index.html"
 # url = "https://www.tutorialspoint.com/python-pandas-get-the-number-of-days-from-timedelta"
 # url = "https://www.google.com/maps"
-url = "https://157.240.16.35"
+# url = "https://157.240.16.35"
 
 
 fe = FeaturesExtraction(url)
