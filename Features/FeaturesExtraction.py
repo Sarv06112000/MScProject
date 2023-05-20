@@ -48,8 +48,8 @@ class FeaturesExtraction:
                     self.domain.websiteTraffic(),
                     self.domain.pageRank(self.soup),
                     # self.domain.googleIndex(),
-                    self.domain.linkPointingPage(self.soup)]
-                    # self.domain.statisticReport()]
+                    self.domain.linkPointingPage(self.soup),
+                    self.domain.statisticReport()]
         return features
 
 
@@ -63,7 +63,7 @@ class FeaturesExtraction:
 # url = "http://0x58.0xCC.0xCA.0x62/2/paypal.ca/index.html"
 # url = "https://www.tutorialspoint.com/python-pandas-get-the-number-of-days-from-timedelta"
 # url = "https://www.google.com/maps"
-# url = "https://157.240.16.35"
+url = "https://157.240.16.35"
 
 
 fe = FeaturesExtraction(url)
