@@ -32,7 +32,14 @@ class HtmlJsFeatures:
             return -1
 
     def disableRightClick(self):
-        return self.url
+        try:
+            resp = requests.get(self.url)
+            if re.findall(r"event.button ?== ?2", resp.text):
+                return -1
+            else:
+                return 1
+        except:
+            return -1
 
     def usingPopUpWindow(self):
         return self.url
