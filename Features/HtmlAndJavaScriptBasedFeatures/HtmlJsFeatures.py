@@ -2,6 +2,7 @@
 # 0  ----> Suspicious
 # 1  ----> Legitimate
 import requests
+import re
 
 
 class HtmlJsFeatures:
@@ -21,7 +22,14 @@ class HtmlJsFeatures:
             return -1
 
     def statusBarCustom(self):
-        return self.url
+        try:
+            resp = requests.get(self.url)
+            if re.findall("<script>.+onmouseover.+</script>", resp.text):
+                return -1
+            else:
+                return 1
+        except:
+            return -1
 
     def disableRightClick(self):
         return self.url
