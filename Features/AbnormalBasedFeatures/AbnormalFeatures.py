@@ -112,10 +112,10 @@ class AbnormalFeatures:
         except:
             return -1
 
-    def submitMailInformation(self):
+    def submitMailInformation(self, resp):
         try:
-            resp = requests.get(self.url)
-            if re.findall(r"[mail\(\)|mailto:?]", resp.text):
+            # resp = requests.get(self.url)
+            if re.findall(r"[mail\(\)|mailto:?]", resp):
                 return -1
             else:
                 return 1

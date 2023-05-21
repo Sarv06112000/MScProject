@@ -21,35 +21,42 @@ class HtmlJsFeatures:
         except:
             return -1
 
-    def statusBarCustom(self):
+    def statusBarCustom(self, resp):
         try:
-            resp = requests.get(self.url)
-            if re.findall("<script>.+onmouseover.+</script>", resp.text):
+            # resp = requests.get(self.url)
+            if re.findall("<script>.+onmouseover.+</script>", resp):
                 return -1
             else:
                 return 1
         except:
             return -1
 
-    def disableRightClick(self):
+    def disableRightClick(self, resp):
         try:
-            resp = requests.get(self.url)
-            if re.findall(r"event.button ?== ?2", resp.text):
+            # resp = requests.get(self.url)
+            if re.findall(r"event.button ?== ?2", resp):
                 return -1
             else:
                 return 1
         except:
             return -1
 
-    def usingPopUpWindow(self):
+    def usingPopUpWindow(self, resp):
         try:
-            resp = requests.get(self.url)
-            if len(re.findall(r"prompt\(", resp.text)) == 0 or len(re.findall(r"window.prompt\(", resp.text)) == 0:
+            # resp = requests.get(self.url)
+            if len(re.findall(r"prompt\(", resp)) == 0 or len(re.findall(r"window.prompt\(", resp)) == 0:
                 return -1
             else:
                 return 1
         except:
             return -1
 
-    def iFrameRedirection(self):
-        return self.url
+    def iFrameRedirection(self, resp):
+        try:
+            # resp = requests.get(self.url)
+            if re.findall(r"[<iframe>|<frameBorder>]", resp):
+                return -1
+            else:
+                return 1
+        except:
+            return -1

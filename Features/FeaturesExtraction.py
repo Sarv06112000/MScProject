@@ -13,7 +13,8 @@ class FeaturesExtraction:
             self.domain_info = whois.whois(url)
         except:
             self.domain_info = 1
-        self.soup = web.getSoup(url)
+        self.response = web.getResponse(url)
+        self.soup = web.getSoup(self.response)
         self.address = AddressFeatures.AddressFeatures(self.url)
         self.abnormal = AbnormalFeatures.AbnormalFeatures(self.url)
         self.domain = DomainFeatures.DomainFeatures(self.url)
@@ -36,13 +37,13 @@ class FeaturesExtraction:
                     self.abnormal.urlOfAnchor(self.soup),
                     self.abnormal.linksInTags(self.soup),
                     self.abnormal.serverFormHandler(self.soup),
-                    self.abnormal.submitMailInformation(),
+                    self.abnormal.submitMailInformation(self.response),
                     self.abnormal.abnormalURL(self.domain_info),
                     self.htmljs.websiteForwarding(),
-                    self.htmljs.statusBarCustom(),
-                    self.htmljs.disableRightClick(),
-                    self.htmljs.usingPopUpWindow(),
-                    # self.htmljs.iFrameRedirection(),
+                    self.htmljs.statusBarCustom(self.response),
+                    self.htmljs.disableRightClick(self.response),
+                    self.htmljs.usingPopUpWindow(self.response),
+                    self.htmljs.iFrameRedirection(self.response),
                     self.domain.ageOfDomain(self.domain_info),
                     self.domain.dnsRecord(self.domain_info),
                     self.domain.websiteTraffic(),
@@ -53,7 +54,7 @@ class FeaturesExtraction:
         return features
 
 
-# url = "http://www.hud.ac.uk/students/"
+url = "http://www.hud.ac.uk/students/"
 # url = "http://www.Confirme-paypal.com/"
 # url = "http://www.legitimate.com//http://www.phishing.com"
 # url = "http://bit.ly/19DXSk4"
@@ -63,7 +64,7 @@ class FeaturesExtraction:
 # url = "http://0x58.0xCC.0xCA.0x62/2/paypal.ca/index.html"
 # url = "https://www.tutorialspoint.com/python-pandas-get-the-number-of-days-from-timedelta"
 # url = "https://www.google.com/maps"
-url = "https://157.240.16.35"
+# url = "https://157.240.16.35"
 
 
 fe = FeaturesExtraction(url)

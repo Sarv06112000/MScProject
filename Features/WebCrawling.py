@@ -2,10 +2,18 @@ from bs4 import BeautifulSoup
 import requests
 
 
-def getSoup(url):
+def getResponse(url):
     try:
         resp = requests.get(url)
-        soup = BeautifulSoup(resp.text, 'html.parser')
+        response = resp.text
+    except:
+        return -1
+    return response
+
+
+def getSoup(response):
+    try:
+        soup = BeautifulSoup(response, 'html.parser')
     except:
         return -1
     return soup
