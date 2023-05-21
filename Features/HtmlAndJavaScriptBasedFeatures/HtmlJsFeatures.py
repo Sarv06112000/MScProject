@@ -42,7 +42,14 @@ class HtmlJsFeatures:
             return -1
 
     def usingPopUpWindow(self):
-        return self.url
+        try:
+            resp = requests.get(self.url)
+            if len(re.findall(r"prompt\(", resp.text)) == 0 or len(re.findall(r"window.prompt\(", resp.text)) == 0:
+                return -1
+            else:
+                return 1
+        except:
+            return -1
 
     def iFrameRedirection(self):
         return self.url
