@@ -1,9 +1,9 @@
-from AddressBarBasedFeatures import AddressFeatures
-from AbnormalBasedFeatures import AbnormalFeatures
-from DomainBasedFeatures import DomainFeatures
-from HtmlAndJavaScriptBasedFeatures import HtmlJsFeatures
+from Features.AddressBarBasedFeatures.AddressFeatures import AddressFeatures
+from Features.AbnormalBasedFeatures.AbnormalFeatures import AbnormalFeatures
+from Features.DomainBasedFeatures.DomainFeatures import DomainFeatures
+from Features.HtmlAndJavaScriptBasedFeatures.HtmlJsFeatures import HtmlJsFeatures
 import whois
-import WebCrawling as web
+from Features import WebCrawling as web
 
 
 class FeaturesExtraction:
@@ -15,10 +15,10 @@ class FeaturesExtraction:
             self.domain_info = 1
         self.response = web.getResponse(url)
         self.soup = web.getSoup(self.response)
-        self.address = AddressFeatures.AddressFeatures(self.url)
-        self.abnormal = AbnormalFeatures.AbnormalFeatures(self.url)
-        self.domain = DomainFeatures.DomainFeatures(self.url)
-        self.htmljs = HtmlJsFeatures.HtmlJsFeatures(self.url)
+        self.address = AddressFeatures(self.url)
+        self.abnormal = AbnormalFeatures(self.url)
+        self.domain = DomainFeatures(self.url)
+        self.htmljs = HtmlJsFeatures(self.url)
 
     def getFeatures(self):
         features = [self.address.usingIPAddress(),
@@ -55,7 +55,7 @@ class FeaturesExtraction:
 
 
 # url = "http://www.hud.ac.uk/students/"
-url = "http://www.Confirme-paypal.com/"
+# url = "http://www.Confirme-paypal.com/"
 # url = "http://www.legitimate.com//http://www.phishing.com"
 # url = "http://bit.ly/19DXSk4"
 # url = "http://portal.hud.ac.uk/"
@@ -66,9 +66,3 @@ url = "http://www.Confirme-paypal.com/"
 # url = "https://www.google.com/maps"
 # url = "https://157.240.16.35"
 
-
-fe = FeaturesExtraction(url)
-j = 1
-for i in fe.getFeatures():
-    print(f"{j}. {i}")
-    j = j + 1
