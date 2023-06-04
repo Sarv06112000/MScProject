@@ -115,7 +115,23 @@ class AddressFeatures:
         return -1
 
     def nonStandardPort(self):
-        return self.url
+        host = re.findall(Pattern.DOMAIN, self.url)
+        try:
+            if len(host) > 0:
+                target_ports = [21, 22, 23, 445, 1433, 1521, 3306, 3389]
+                for port in target_ports:
+                    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                    sock.settimeout(1)  # Set timeout to 1 second
+                    result = sock.connect_ex((host[0], port))
+                    sock.close()
+                    if result == 0:
+                        return 1
+                    else:
+                        return -1
+            else:
+                return -1
+        except:
+            return -1
 
     def httpsInDomainPart(self):
         domain_name = re.findall(Pattern.DOMAIN, self.url)[0]

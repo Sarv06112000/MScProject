@@ -73,7 +73,14 @@ class DomainFeatures:
             return -1
 
     def googleIndex(self):
-        return self.url
+        try:
+            response = requests.get(f"https://www.google.com/search?q=site:{self.url}")
+            if response.text.find("did not match any documents") == -1:
+                return 1
+            else:
+                return -1
+        except:
+            return -1
 
     def linkPointingPage(self, soup):
         try:

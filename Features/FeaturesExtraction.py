@@ -31,7 +31,7 @@ class FeaturesExtraction:
                     self.address.httpsDomain(self.domain_info),
                     self.address.domainRegLength(self.domain_info),
                     self.address.faviconExternalDomain(self.soup),
-                    # self.address.nonStandardPort(),
+                    self.address.nonStandardPort(),
                     self.address.httpsDomain(self.domain_info),
                     self.abnormal.requestURL(self.soup),
                     self.abnormal.urlOfAnchor(self.soup),
@@ -48,14 +48,14 @@ class FeaturesExtraction:
                     self.domain.dnsRecord(self.domain_info),
                     self.domain.websiteTraffic(),
                     self.domain.pageRank(self.soup),
-                    # self.domain.googleIndex(),
+                    self.domain.googleIndex(),
                     self.domain.linkPointingPage(self.soup),
                     self.domain.statisticReport()]
         return features
 
 
-url = "http://www.hud.ac.uk/students/"
-# url = "http://www.Confirme-paypal.com/"
+# url = "http://www.hud.ac.uk/students/"
+url = "http://www.Confirme-paypal.com/"
 # url = "http://www.legitimate.com//http://www.phishing.com"
 # url = "http://bit.ly/19DXSk4"
 # url = "http://portal.hud.ac.uk/"
@@ -68,4 +68,7 @@ url = "http://www.hud.ac.uk/students/"
 
 
 fe = FeaturesExtraction(url)
-print(fe.getFeatures())
+j = 1
+for i in fe.getFeatures():
+    print(f"{j}. {i}")
+    j = j + 1
