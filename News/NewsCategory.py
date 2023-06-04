@@ -6,12 +6,14 @@ url = "https://krebsonsecurity.com/category/data-breaches/"
 response = http.request('GET',url)
 soup = BeautifulSoup(response.data, 'html.parser')
 
+
 def getCategory():
     category = dict()
     category_anchors = soup.findAll('a', attrs={'rel':'category tag'})
     for category_anchor in category_anchors:
         category[category_anchor.text]=category_anchor.get('href')
     return category
+
 
 def getCategoryTags():
     category_tag = dict()

@@ -2,19 +2,21 @@ from bs4 import BeautifulSoup
 from News import NewsCategory
 import urllib3
 
+
 def getNews(category):
     cat = category
     http = urllib3.PoolManager()
     category = NewsCategory.getCategory()
     # print(category)
-    url = category.get(cat) # response = http.request('GET', 'https://krebsonsecurity.com/category/data-breaches/')
+    url = category.get(cat)
+    # response = http.request('GET', 'https://krebsonsecurity.com/category/data-breaches/')
     # print(url)
-    response = http.request("GET",url)
+    response = http.request("GET", url)
     data = response.data
-    soup = BeautifulSoup(data,'html.parser')
+    soup = BeautifulSoup(data, 'html.parser')
     # print(soup.prettify())
-   
-    urls=set()
+
+    urls = set()
     headlines = set()
     news_Articles = set()
     news_images = set()
@@ -40,28 +42,30 @@ def getNews(category):
     news_Articles = list(news_Articles)
     news_images = list(news_images)
     img_src = ""
-    if(len(urls)<len(news_Articles)):
+    if len(urls) < len(news_Articles):
         for i in range(len(urls), len(news_Articles)):
             urls.append(str(url))
-    if(len(headlines)<len(news_Articles)):
-        headline=cat
+    if len(headlines) < len(news_Articles):
+        headline = cat
         for i in range(len(headlines), len(news_Articles)):
             headlines.append(str(headline))
-    if(len(news_images)<len(news_Articles)):
+    if len(news_images) < len(news_Articles):
         for i in range(len(news_images), len(news_Articles)):
             news_images.append(str(img_src))
 
-    return (urls, headlines, news_Articles, news_images)
+    return urls, headlines, news_Articles, news_images
+
 
 # urls, headlines, news_Articles, news_images, category = getNews(category)
 
 def generate_news_api(urls, headlines, news_Articles, news_images, category):
     articles = list()
-    for i in range(0,len(urls)):
-        articles.append(dict(url = urls[i], title = headlines[i], description = news_Articles[i], urlToImage = news_images[i]))
+    for i in range(0, len(urls)):
+        articles.append(dict(url=urls[i], title=headlines[i], description=news_Articles[i], urlToImage=news_images[i]))
 
-    news = {"totalResults":len(news_Articles), "category":category,"articles":articles}
+    news = {"totalResults": len(news_Articles), "category": category, "articles": articles}
     return news
+
 
 """
 if(len(urls) == len(headlines) == len(news_Articles) == len(news_images)):
