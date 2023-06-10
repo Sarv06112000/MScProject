@@ -69,19 +69,18 @@ class AddressFeatures:
                 with ctx.wrap_socket(socket.socket(), server_hostname=domain_name) as s:
                     s.connect((domain_name, 443))
                     cert = s.getpeercert()
+                issuer = dict(x[0] for x in cert['issuer'])
+                issued_by = issuer.get('organizationName')
+                domain_info = domain_info
+                create_date = domain_info.get('creation_date')[0]
+                expire_date = domain_info.get('expiration_date')[0]
+                domain_age = (expire_date - create_date)
+                if domain_age.days >= 365 and issued_by in []:
+                    return 1
+                elif issued_by not in []:
+                    return 0
             except:
                 return -1
-            issuer = dict(x[0] for x in cert['issuer'])
-            issued_by = issuer.get('organizationName')
-            domain_info = domain_info
-            # whois.whois(self.url)
-            create_date = domain_info.get('creation_date')[0]
-            expire_date = domain_info.get('expiration_date')[0]
-            domain_age = (expire_date - create_date)
-            if domain_age.days >= 365 and issued_by in []:
-                return 1
-            elif issued_by not in []:
-                return 0
         else:
             return -1
 

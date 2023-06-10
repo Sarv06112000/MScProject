@@ -7,7 +7,7 @@ import numpy as np
 
 
 def isPhising(url):
-    dataset = pd.read_csv('PhishingDataset.csv')
+    dataset = pd.read_csv('Features/PhishingDataset.csv')
     x = dataset.iloc[:, 1:-1].values
     y = dataset.iloc[:, -1].values
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
@@ -21,9 +21,22 @@ def isPhising(url):
     feat = FeaturesExtraction(url)
     feature = np.array([feat.getFeatures()])
     y_pred_independent_data = clf.predict(feature)
-    # print(y_pred_independent_data)
+
+    # getting co-ordinates training_accuracy vs test_accuracy
+    training_accuracy = []
+    test_accuracy = []
+    # try max_depth from 1 to 50
+    depth = range(1, 50)
+    for n in depth:
+        forest_test = RandomForestClassifier(n_estimators=n)
+        forest_test.fit(x_train, y_train)
+        # record training set accuracy
+        training_accuracy.append(forest_test.score(x_train, y_train))
+        # record generalization accuracy
+        test_accuracy.append(forest_test.score(x_test, y_test))
+
     if y_pred_independent_data == -1:
-        return False
+        return True, test_accuracy, training_accuracy
     else:
-        return True
+        return False, test_accuracy, training_accuracy
 

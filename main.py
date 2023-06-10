@@ -13,14 +13,21 @@ CORS(app, origins=['http://localhost:3000'], methods=['POST'])
 
 @app.route("/detect", methods=['POST'])
 def detect():
-    input_url = request.get_json("url")
+    input_url = request.get_json()
+    data = {}
     headers = {
         'Access-Control-Allow-Origin': 'http://localhost:3000',
         'Access-Control-Allow-Methods': 'POST',
         'Access-Control-Allow-Headers': 'Content-Type',
         'Content-Type': 'application/json'
     }
-    data = PhishingDetection.isPhising(input_url)
+    try:
+        data["domainInfo"] = whois.whois(input_url.get("URL"))
+        data["isPhishing"], data["testAccuracy"], data["trainAccuracy"] = PhishingDetection.isPhising(
+            input_url.get('URL'))
+
+    except:
+        data["error"] = "Domain not valid"
     response = app.response_class(response=json.dumps(data), status=200, mimetype='application/json', headers=headers)
     return response
 
@@ -94,8 +101,6 @@ def news():
     # print(input_category,"\n", category)
     news = kbs.getNews(category)
 
-    # data = {'News':news}
-    # print(news)
     message = json.dumps(news)
     return app.response_class(response=message, status=200, mimetype='application/javascript, png', headers=headers)
 
