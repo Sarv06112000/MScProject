@@ -5,6 +5,7 @@ from News import SecurityNewsApi as kbs
 from flask import Flask, request, json, jsonify
 from flask_cors import CORS
 from Features import PhishingDetection
+from Features import Patterns as Pattern
 
 
 app = Flask(__name__)
@@ -21,13 +22,16 @@ def detect():
         'Access-Control-Allow-Headers': 'Content-Type',
         'Content-Type': 'application/json'
     }
-    try:
-        data["domainInfo"] = whois.whois(input_url.get("URL"))
-        data["isPhishing"], data["testAccuracy"], data["trainAccuracy"] = PhishingDetection.isPhising(
-            input_url.get('URL'))
+    if re.compile(Pattern.URL).match(input_url.get("URL")):
+        try:
+            data["domainInfo"] = whois.whois(input_url.get("URL"))
+            data["isPhishing"], data["testAccuracy"], data["trainAccuracy"] = PhishingDetection.isPhising(
+                input_url.get('URL'))
 
-    except:
-        data["error"] = "Domain not valid"
+        except:
+            data["error"] = "Domain not valid"
+    else:
+        data["error"] = "URL is not valid!"
     response = app.response_class(response=json.dumps(data), status=200, mimetype='application/json', headers=headers)
     return response
 
